@@ -14,7 +14,7 @@
 	</parent>
 
 	<groupId>com.in28minutes.rest</groupId>
-	<artifactId>jenkins-tutorial</artifactId>
+	<artifactId>jenkins-tutorial-1</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>service-one</name>
 	<description>Jenkins Tutorial</description>
