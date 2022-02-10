@@ -14,7 +14,6 @@ import com.in28minutes.rest.entity.User;
 import com.in28minutes.rest.proxy.ServiceTwoFeignClient;
 
 @RestController
-@RequestMapping(value ="/throttling")
 public class UserController {
 
 	@Autowired
