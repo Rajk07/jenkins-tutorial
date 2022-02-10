@@ -6,7 +6,7 @@
 	<!--parent> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-parent</artifactId> 
 		<version>2.3.2.RELEASE</version> <relativePath /> </parent! -->
 
-<parent>
+	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.3.2.RELEASE</version>
@@ -14,15 +14,24 @@
 	</parent>
 
 	<groupId>com.in28minutes.rest</groupId>
-	<artifactId>service-one</artifactId>
+	<artifactId>jenkins-tutorial</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>service-one</name>
-	<description>Demo project for Spring Boot</description>
-
+	<description>Jenkins Tutorial</description>
+	<url>https://github.com/Rajk07/host-maven-repo-example.git</url>
+	<scm>
+		<url>https://github.com/Rajk07/host-maven-repo-example.git</url>
+		<connection>scm:git:git@github.com/Rajk07/host-maven-repo-example.git</connection>
+		<developerConnection>scm:git:git@github.com/Rajk07/host-maven-repo-example.git</developerConnection>
+	</scm>
 	<properties>
+		<github.global.server>github</github.global.server>
+		<maven.compiler.source>8</maven.compiler.source>
+		<maven.compiler.target>8</maven.compiler.target>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.SR4</spring-cloud.version>
 	</properties>
+
 
 	<dependencies>
 		<dependency>
@@ -48,20 +57,12 @@
 			<version>1.18.8</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>com.fasterxml.jackson.dataformat</groupId>
-					<artifactId>jackson-dataformat-xml</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency> -->
-		<!-- <dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId> 
+			<exclusions> <exclusion> <groupId>com.fasterxml.jackson.dataformat</groupId> 
+			<artifactId>jackson-dataformat-xml</artifactId> </exclusion> </exclusions> 
+			</dependency> -->
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-openfeign</artifactId> 
+			</dependency> -->
 		<!--dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-config</artifactId> 
 			</dependency -->
 		<dependency>
@@ -84,21 +85,79 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
-	
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>Temporary Staging Repository</name>
+			<url>file://${project.build.directory}/mvn-artifact</url>
+		</repository>
+	</distributionManagement>
+
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.1.0</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.12</version>
 				<configuration>
-					<image>
-						<name>967rajkumar/mmv2-${project.artifactId}:${project.version}</name>
-					</image>
-					<pullPolicy>IF_NOT_PRESENT</pullPolicy>
+					<message>Maven artifacts for ${project.version}</message>
+					<noJekyll>true</noJekyll>
+					<outputDirectory>${project.build.directory}</outputDirectory>
+					<branch>refs/heads/main</branch>
+					<includes>
+						<include>**/*</include>
+					</includes>
+					<merge>true</merge>
+					<repositoryName>host-maven-repo-example</repositoryName>
+					<repositoryOwner>Rajk07</repositoryOwner>
+					<server>github</server>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>deploy</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+				<configuration>
+					<altDeploymentRepository>
+						internal.repo::default::file://${project.build.directory}/mvn-artifact
+					</altDeploymentRepository>
 				</configuration>
 			</plugin>
+
+
 		</plugins>
 	</build>
+
+	<repositories>
+		<repository>
+			<id>PROJECT-REPO-URL</id>
+			<!-- <url>https://github.com/sgrverma23/host-maven-repo-example/main</url> -->
+			<url>https://github.com/Rajk07/host-maven-repo-example/main</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
 
 </project>
