@@ -23,6 +23,7 @@ class UserDAOServiceTest {
 		List<User> allUsers = userDAOService.getUsers();
 		assertFalse(allUsers.isEmpty());
 		assertEquals(3, allUsers.size());
+		assertEquals(2, allUsers.size());
 	}
 
 }
